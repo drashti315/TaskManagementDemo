@@ -1,0 +1,72 @@
+﻿@model IEnumerable<TaskManagementDemo.Models.TaskDetail>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col">
+        <h1>Task Management</h1>
+    </div>
+    <div class="col text-right">
+        <a asp-action="AddUpdateTask" class="btn btn-success">Create New</a>
+    </div>
+</div>
+
+<br />
+
+@if (Model != null && Model.Any())
+{
+
+    <table class="table">
+        <thead>
+            <tr class="row">
+                <th class="col-md-2">
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th class="col-md-4"> 
+                    @Html.DisplayNameFor(model => model.Description)
+                </th>
+                <th class="col-md-2">
+                    @Html.DisplayNameFor(model => model.Status)
+                </th>
+                <th class="col-md-4"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr class="row">
+                    <td class="col-md-2">
+                        <div class="text-truncate" title="@item.Name">
+                            @item.Name
+                        </div>
+                    </td>
+                    <td class="col-md-4">
+                        <div class="text-truncate" title="@item.Description">
+                            @item.Description
+                        </div>
+                    </td>
+                    <td class="col-md-2">
+                        <div title="@item.StatusName">
+                            @item.StatusName
+                        </div>
+                    </td>
+                    <td class="col-md-4">
+                        <div>
+                            @Html.ActionLink("Edit", "AddUpdateTask", new { id = item.Id }, new { @class = "btn btn-primary" })
+                            @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btn btn-secondary" })
+                            @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn btn-danger" })
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No records found.</p>
+}
+

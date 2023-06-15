@@ -1,0 +1,68 @@
+﻿
+@model TaskManagementDemo.Models.TaskDetail
+
+@{
+    ViewData["Title"] = "AddUpdateTask";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (Model?.Id > 0)
+{
+
+    <h1>Update Task</h1>
+}
+else
+{
+
+    <h1>Add Task</h1>
+}
+
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="AddUpdateTask" method="post">
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control htmlTagNotAllowed" maxlength="200"/>
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <textarea asp-for="Description" class="form-control htmlTagNotAllowed"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+
+            @if (Model.TaskStatus != null && Model.TaskStatus.Any())
+            {
+                <div class="form-group">
+                    <label asp-for="Status" class="control-label"></label>
+                    <select asp-for="Status"
+                            class="form-control"
+                            asp-items="@(new SelectList(Model.TaskStatus, "Value", "Text",Model.Status))">
+                    </select>
+                    <span asp-validation-for="Status" class="text-danger"></span>
+                </div>
+            }
+
+            <div class="form-group">
+                <input type="submit" value="Submit" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    $(".htmlTagNotAllowed").on("focusout keyup blur", function (e) {
+        var reg = /[<>]/g;
+        if (reg.test($(this).val()) == true) {
+            alert("Html tag not allowed.");
+            var txt = $(this).val();
+            txt = txt.replace(reg, "");
+            $(this).val(txt);
+        }
+        e.preventDefault();
+    });
+</script>
